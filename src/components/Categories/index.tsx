@@ -15,7 +15,7 @@ export function Categories() {
       renderItem={({ item: category }) => (
         <Category>
           <Icon>
-            <Text>{category._id}</Text>
+            <Text>{category.icon}</Text>
           </Icon>
           <Text>{category.name}</Text>
         </Category>
