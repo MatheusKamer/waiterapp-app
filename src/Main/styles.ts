@@ -11,12 +11,10 @@ export const Container = styled.SafeAreaView`
 
 export const CategoriesContainer = styled.View`
   height: 73px;
-  background-color: red;
   margin-top: 34px;
 `;
 
 export const MenuContainer = styled.View`
-  background-color: blue;
   flex: 1;
 `;
 
