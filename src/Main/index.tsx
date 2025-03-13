@@ -9,6 +9,7 @@ import {
 import { Menu } from '../components/Menu';
 import { Header } from '../components/Header';
 import { Categories } from '../components/Categories';
+import { Button } from '../components/Button';
 
 export function Main() {
   return (
@@ -25,7 +26,11 @@ export function Main() {
       </Container>
 
       <Footer>
-        <FooterContainer></FooterContainer>
+        <FooterContainer>
+          <Button onPress={() => alert('Novo pedido')} disabled={true}>
+            Novo Pedido
+          </Button>
+        </FooterContainer>
       </Footer>
     </>
   );
