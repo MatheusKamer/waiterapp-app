@@ -30,10 +30,14 @@ export function Main() {
     handleCloseTableModal();
   }
 
+  function handleCancelOrder() {
+    setSelectedTable('');
+  }
+
   return (
     <>
       <Container>
-        <Header table={selectedTable} />
+        <Header table={selectedTable} onCancelOrder={handleCancelOrder} />
 
         <CategoriesContainer>
           <Categories />

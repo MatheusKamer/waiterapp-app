@@ -4,9 +4,10 @@ import { Container, Content, OrderHeader, Table } from './styles';
 
 interface HeaderProps {
   table: string;
+  onCancelOrder: () => void;
 }
 
-export function Header({ table }: HeaderProps) {
+export function Header({ table, onCancelOrder }: HeaderProps) {
   return (
     <Container>
       {table ? (
@@ -15,7 +16,7 @@ export function Header({ table }: HeaderProps) {
             <Text size={24} weight="600">
               Pedido
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onCancelOrder}>
               <Text color="#D73035" weight="600" size={14}>
                 cancelar pedido
               </Text>
