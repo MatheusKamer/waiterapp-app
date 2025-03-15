@@ -33,7 +33,7 @@ export function Main() {
   return (
     <>
       <Container>
-        <Header />
+        <Header table={selectedTable} />
 
         <CategoriesContainer>
           <Categories />
