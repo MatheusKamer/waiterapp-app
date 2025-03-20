@@ -16,7 +16,11 @@ import { ProductModal } from '../ProductModal';
 import { useState } from 'react';
 import { Product } from '../../@types/ProductType';
 
-export function Menu() {
+interface MenuProps {
+  onAddToCard: (product: Product) => void;
+}
+
+export function Menu({ onAddToCard }: MenuProps) {
   const [isProductModalVisible, setIsProductModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -31,6 +35,7 @@ export function Menu() {
         visible={isProductModalVisible}
         onClose={() => setIsProductModalVisible(false)}
         product={selectedProduct}
+        onAddToCard={onAddToCard}
       />
 
       <FlatList
@@ -57,7 +62,7 @@ export function Menu() {
               </Text>
             </ProductDetails>
 
-            <AddToCartButton>
+            <AddToCartButton onPress={() => onAddToCard(product)}>
               <PlusCircle />
             </AddToCartButton>
           </ProductContainer>

@@ -14,25 +14,12 @@ import { TableModal } from '../components/TableModal';
 import { useState } from 'react';
 import { Cart } from '../components/Cart';
 import { CartItem } from '../@types/CartItemType';
-import { products } from '../mocks/products';
+import { Product } from '../@types/ProductType';
 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      quantity: 1,
-      product: products[0],
-    },
-    {
-      quantity: 2,
-      product: products[1],
-    },
-    {
-      quantity: 2,
-      product: products[2],
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   function handleOpenTableModal() {
     setIsTableModalVisible(true);
@@ -51,6 +38,31 @@ export function Main() {
     setSelectedTable('');
   }
 
+  function handleAddToCart(product: Product) {
+    if (!selectedTable) {
+      setIsTableModalVisible(true);
+    }
+
+    setCartItems((prevState) => {
+      const productIndex = prevState.findIndex(
+        (cartItem) => cartItem.product._id === product._id
+      );
+
+      if (productIndex !== -1) {
+        prevState[productIndex].quantity += 1;
+        return [...prevState];
+      }
+
+      return [
+        ...prevState,
+        {
+          quantity: 1,
+          product,
+        },
+      ];
+    });
+  }
+
   return (
     <>
       <Container>
@@ -60,7 +72,7 @@ export function Main() {
           <Categories />
         </CategoriesContainer>
         <MenuContainer>
-          <Menu />
+          <Menu onAddToCard={handleAddToCart} />
         </MenuContainer>
       </Container>
 
