@@ -33,9 +33,15 @@ export function Cart({
   onConfirmOrder,
 }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleConfirmOrder() {
-    setIsModalVisible(true);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsModalVisible(true);
+    }, 5000);
   }
 
   function handleCloseModal() {
@@ -117,7 +123,11 @@ export function Cart({
           )}
         </TotalContainer>
 
-        <Button onPress={handleConfirmOrder} disabled={cartItems.length === 0}>
+        <Button
+          onPress={handleConfirmOrder}
+          disabled={cartItems.length === 0}
+          loading={isLoading}
+        >
           Confirmar pedido
         </Button>
       </Summary>

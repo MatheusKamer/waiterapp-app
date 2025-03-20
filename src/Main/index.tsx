@@ -1,9 +1,12 @@
+import { ActivityIndicator } from 'react-native';
+
 import {
   Container,
   CategoriesContainer,
   MenuContainer,
   Footer,
   FooterContainer,
+  CenteredContainer,
 } from './styles';
 
 import { Menu } from '../components/Menu';
@@ -16,10 +19,16 @@ import { Cart } from '../components/Cart';
 import { CartItem } from '../@types/CartItemType';
 import { Product } from '../@types/ProductType';
 
+import { products as mockProducts } from '../mocks/products';
+import { Empty } from '../components/Icons/Empty';
+import { Text } from '../components/Text';
+
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoading] = useState(false);
+  const [products] = useState<Product[]>(mockProducts);
 
   function handleOpenTableModal() {
     setIsTableModalVisible(true);
@@ -89,18 +98,40 @@ export function Main() {
       <Container>
         <Header table={selectedTable} onCancelOrder={handleResetOrder} />
 
-        <CategoriesContainer>
-          <Categories />
-        </CategoriesContainer>
-        <MenuContainer>
-          <Menu onAddToCard={handleAddToCart} />
-        </MenuContainer>
+        {isLoading && (
+          <CenteredContainer>
+            <ActivityIndicator color="#D73035" size="large" />
+          </CenteredContainer>
+        )}
+
+        {!isLoading && (
+          <>
+            <CategoriesContainer>
+              <Categories />
+            </CategoriesContainer>
+
+            {products.length > 0 ? (
+              <MenuContainer>
+                <Menu onAddToCard={handleAddToCart} products={products} />
+              </MenuContainer>
+            ) : (
+              <CenteredContainer>
+                <Empty />
+                <Text color="#666" size={24}>
+                  Nenhum produto foi encontrado!
+                </Text>
+              </CenteredContainer>
+            )}
+          </>
+        )}
       </Container>
 
       <Footer>
         <FooterContainer>
           {!selectedTable && (
-            <Button onPress={handleOpenTableModal}>Novo Pedido</Button>
+            <Button onPress={handleOpenTableModal} disabled={isLoading}>
+              Novo Pedido
+            </Button>
           )}
 
           {selectedTable && (
