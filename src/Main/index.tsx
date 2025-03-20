@@ -36,6 +36,7 @@ export function Main() {
 
   function handleCancelOrder() {
     setSelectedTable('');
+    setCartItems([]);
   }
 
   function handleAddToCart(product: Product) {
@@ -63,6 +64,26 @@ export function Main() {
     });
   }
 
+  function handleRemoveFromCart(product: Product) {
+    setCartItems((prevState) => {
+      const productIndex = prevState.findIndex(
+        (cartItem) => cartItem.product._id === product._id
+      );
+
+      const item = prevState[productIndex];
+
+      if (item.quantity === 1) {
+        const newCartItems = [...prevState];
+        newCartItems.splice(productIndex, 1);
+
+        return newCartItems;
+      }
+
+      item.quantity -= 1;
+      return [...prevState];
+    });
+  }
+
   return (
     <>
       <Container>
@@ -82,7 +103,13 @@ export function Main() {
             <Button onPress={handleOpenTableModal}>Novo Pedido</Button>
           )}
 
-          {selectedTable && <Cart cartItems={cartItems} />}
+          {selectedTable && (
+            <Cart
+              cartItems={cartItems}
+              onAdd={handleAddToCart}
+              onRemove={handleRemoveFromCart}
+            />
+          )}
         </FooterContainer>
       </Footer>
 
