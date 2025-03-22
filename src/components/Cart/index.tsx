@@ -18,12 +18,14 @@ import { Button } from '../Button';
 import { Product } from '../../@types/ProductType';
 import { OrderConfirmedModal } from '../OrderConfirmedModal';
 import { useState } from 'react';
+import { api } from '../../utils/api';
 
 interface CartProps {
   cartItems: CartItem[];
   onAdd: (product: Product) => void;
   onRemove: (product: Product) => void;
   onConfirmOrder: () => void;
+  selectedTable: string;
 }
 
 export function Cart({
@@ -31,17 +33,24 @@ export function Cart({
   onAdd,
   onRemove,
   onConfirmOrder,
+  selectedTable,
 }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleConfirmOrder() {
+  async function handleConfirmOrder() {
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsModalVisible(true);
-    }, 5000);
+    await api.post('/orders', {
+      table: selectedTable,
+      products: cartItems.map((cartItem) => ({
+        product: cartItem.product._id,
+        quantity: cartItem.quantity,
+      })),
+    });
+
+    setIsLoading(false);
+    setIsModalVisible(true);
   }
 
   function handleCloseModal() {
